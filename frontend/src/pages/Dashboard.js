@@ -7,7 +7,7 @@ function Dashboard() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("https://vkhtgvxfunkeau4aojvqfliu3q0gtvns.lambda-url.ap-south-1.on.aws/api/v1/dashboard/live")
+    fetch("http://127.0.0.1:8000/api/v1/dashboard/live")
       .then((res) => res.json())
       .then((data) => setData(data));
   }, []);

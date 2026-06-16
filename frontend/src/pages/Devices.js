@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Fan,
@@ -25,15 +25,58 @@ function Devices() {
   };
 
   // Fetch devices
-  const loadDevices = () => {
-    fetch("https://vkhtgvxfunkeau4aojvqfliu3q0gtvns.lambda-url.ap-south-1.on.aws/api/v1/devices")
-      .then((res) => res.json())
-      .then((data) => setDevices(Array.isArray(data) ? data : data.devices || []));
-  };
+  const loadDevices = useCallback(async () => {
+
+    try {
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/v1/devices"
+      );
+
+      const data = await response.json();
+
+      setDevices(
+        Array.isArray(data)
+          ? data
+          : data.devices || []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Failed to load devices:",
+        error
+      );
+
+    }
+
+  }, []);
 
   useEffect(() => {
+
     loadDevices();
-  }, []);
+
+    const handleDeviceUpdate = () => {
+
+      loadDevices();
+
+    };
+
+    window.addEventListener(
+      "device-updated",
+      handleDeviceUpdate
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "device-updated",
+        handleDeviceUpdate
+      );
+
+    };
+
+  }, [loadDevices]);
 
   // Toggle device
   const toggleDevice = async (id) => {
@@ -41,7 +84,7 @@ function Devices() {
     if (!device) return;
 
     const newStatus = device.status === "ON" ? "OFF" : "ON";
-    await fetch(`https://vkhtgvxfunkeau4aojvqfliu3q0gtvns.lambda-url.ap-south-1.on.aws/api/v1/devices/${id}`, {
+    await fetch(`http://127.0.0.1:8000/api/v1/devices/${id}`, {
 
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

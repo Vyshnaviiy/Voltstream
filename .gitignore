@@ -1,14 +1,27 @@
-# React
-frontend/node_modules
-frontend/build
-
 # Python
-backend/venv
-backend/package
-backend/__pycache__
+venv/
+__pycache__/
+*.pyc
 
-# Lambda deployment zip
-backend/lambda.zip
+# ChromaDB
+backend/chroma_db/
 
-# Environment files
+# Environment
 .env
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+
+# React build
+frontend/build/
+
+# Test files
+backend/test_bedrock.py
+backend/test-listmodels.py
+
+# Lambda build artifacts
+backend/lambda.zip
+backend/package/
