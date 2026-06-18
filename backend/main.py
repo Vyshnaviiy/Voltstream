@@ -3,10 +3,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
-import mock_data
+import agentcore.mock_data as mock_data
+import agentcore.coordinator as coordinator
 from datetime import datetime
 from mangum import Mangum
-
 from services.rag_service import (
     index_pdf,
     retrieve_chunks
@@ -15,7 +15,7 @@ from services.rag_service import (
 from services.bedrock_service import (
     generate_response
 )
-from services.agent_service import (
+from agentcore.agent_service import (
     run_agent
 )
 

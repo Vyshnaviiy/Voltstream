@@ -1,0 +1,62 @@
+default_agent: vs_device_agent
+agents:
+  vs_device_agent:
+    name: vs_device_agent
+    language: python
+    node_version: '20'
+    entrypoint: C:/Users/vyshn/OneDrive/Desktop/Voltstream/backend/agentcore/app.py
+    deployment_type: direct_code_deploy
+    runtime_type: PYTHON_3_13
+    platform: linux/arm64
+    container_runtime: null
+    source_path: C:\Users\vyshn\OneDrive\Desktop\Voltstream\backend\agentcore
+    aws:
+      execution_role: arn:aws:iam::042989515908:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-e35f5b9a89
+      execution_role_auto_create: false
+      account: 042989515908
+      region: us-east-1
+      ecr_repository: null
+      ecr_auto_create: false
+      s3_path: s3://bedrock-agentcore-codebuild-sources-042989515908-us-east-1
+      s3_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: null
+        max_lifetime: null
+    bedrock_agentcore:
+      agent_id: vs_device_agent-9dKYQuE63J
+      agent_arn: arn:aws:bedrock-agentcore:us-east-1:042989515908:runtime/vs_device_agent-9dKYQuE63J
+      agent_session_id: 6c430a45-226d-4315-b766-d5e18230bb2e
+    codebuild:
+      project_name: null
+      execution_role: null
+      source_bucket: null
+    memory:
+      mode: STM_AND_LTM
+      memory_id: voltstream_vyshnavi_device_agent_mem-i4iPtJ6HjL
+      memory_arn: null
+      memory_name: vs_device_agent_memory
+      event_expiry_days: 30
+      first_invoke_memory_check_done: false
+      was_created_by_toolkit: false
+    identity:
+      credential_providers: []
+      workload: null
+    aws_jwt:
+      enabled: false
+      audiences: []
+      signing_algorithm: ES384
+      issuer_url: null
+      duration_seconds: 300
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+    api_key_env_var_name: null
+    api_key_credential_provider_name: null
+    is_generated_by_agentcore_create: false
