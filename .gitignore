@@ -5,6 +5,7 @@ __pycache__/
 
 # ChromaDB
 backend/chroma_db/
+backend/.bedrock_agentcore/**
 
 # Environment
 .env
