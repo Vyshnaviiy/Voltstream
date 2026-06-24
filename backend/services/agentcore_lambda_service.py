@@ -14,9 +14,11 @@ def invoke_agentcore(prompt):
     response = lambda_client.invoke(
         FunctionName=FUNCTION_NAME,
         InvocationType="RequestResponse",
-        Payload=json.dumps({
-            "prompt": prompt
-        })
+        Payload=json.dumps(
+            {
+                "prompt": prompt
+            }
+        )
     )
 
     payload = json.loads(
@@ -30,13 +32,23 @@ def invoke_agentcore(prompt):
         )
     )
 
+    # Remove unwanted XML tags
+    response_text = body.get(
+        "response",
+        ""
+    )
+
+    response_text = (
+        response_text
+        .replace("<response>", "")
+        .replace("</response>", "")
+    )
+
     return {
         "statusCode": payload.get(
             "statusCode"
         ),
-        "response": body.get(
-            "response"
-        ),
+        "response": response_text,
         "sessionId": body.get(
             "sessionId"
         ),

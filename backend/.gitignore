@@ -1,1 +1,4 @@
 *.bedrock_agentcore/**
+*.json
+__pycache__
+*__pycache__/mock_data.cpython-313.pyc
