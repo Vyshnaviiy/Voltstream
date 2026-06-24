@@ -147,8 +147,14 @@ function Chatbot() {
         id: messages.length + 2,
         type: "bot",
         content: data.response,
+        // agent: data.agent,
+        sessionId: data.sessionId,
+        requestId: data.requestId,
         timestamp: new Date()
       };
+
+
+
 
       if (chatMode === "qa") {
         setQaMessages((prev) => [...prev, botMessage]);
@@ -435,6 +441,63 @@ function Chatbot() {
                     <p className="text-sm leading-relaxed">
                       {message.content}
                     </p>
+
+                    {
+                      agentMode &&
+                      message.sessionId && (
+
+                        <div
+                          className="
+        mt-4
+        rounded-xl
+        bg-slate-900/50
+        border border-cyan-500/20
+        p-3
+        text-xs
+      "
+                        >
+
+                          <div
+                            className="
+          text-cyan-400
+          font-semibold
+          mb-3
+        "
+                          >
+                            ⚡ Agent Runtime Information
+                          </div>
+
+
+                          <div className="text-gray-400">
+                            Session ID
+                          </div>
+
+                          <div
+                            className="
+          text-gray-300
+          break-all
+          mb-3
+        "
+                          >
+                            {message.sessionId}
+                          </div>
+
+                          <div className="text-gray-400">
+                            Request ID
+                          </div>
+
+                          <div
+                            className="
+          text-gray-300
+          break-all
+        "
+                          >
+                            {message.requestId}
+                          </div>
+
+                        </div>
+                      )
+                    }
 
                     <p className="text-xs opacity-70 mt-1">
                       {message.timestamp.toLocaleTimeString(

@@ -5,12 +5,21 @@ import re
 
 app = BedrockAgentCoreApp()
 
+
 def clean_response(text):
 
     text = re.sub(
         r"<thinking>.*?</thinking>",
         "",
         str(text),
+        flags=re.DOTALL
+    )
+
+    #return text.strip()
+    text = re.sub(
+        r"</?response>",
+        "",
+        text,
         flags=re.DOTALL
     )
 
@@ -24,14 +33,17 @@ def invoke(payload):
         "prompt",
         "Hello"
     )
-    response = route_request(prompt)
 
-  
+    result = route_request(prompt)
 
     return {
-    "result": clean_response(response)
-}
+        "agent": result["agent"],
+        "result": clean_response(
+            result["response"]
+        )
+    }
 
 
 if __name__ == "__main__":
+
     app.run()

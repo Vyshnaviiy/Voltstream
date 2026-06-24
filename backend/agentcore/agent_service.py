@@ -18,7 +18,7 @@ def run_agent(user_input):
 
     try:
 
-        response = route_request(user_input)
+        result = route_request(user_input)
 
         return {
             "trace": [
@@ -27,7 +27,10 @@ def run_agent(user_input):
                 "Agent executed",
                 "Response generated"
             ],
-            "response": clean_response(response)
+            "agent": result["agent"],
+            "response": clean_response(
+                result["response"]
+            )
         }
 
     except Exception as e:
@@ -36,5 +39,6 @@ def run_agent(user_input):
             "trace": [
                 "Agent execution failed"
             ],
+            "agent": "Unknown",
             "response": str(e)
         }

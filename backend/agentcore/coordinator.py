@@ -1,8 +1,8 @@
 from strands import Agent
 from strands.models import BedrockModel
 
-from device_agent import get_agent
-from energy_advisor_agent import get_energy_agent
+from agentcore.device_agent import get_agent
+from agentcore.energy_advisor_agent import get_energy_agent
 
 _coordinator = None
 
@@ -70,18 +70,30 @@ def route_request(prompt):
 
         print("ROUTING TO DEVICE AGENT")
 
-        return get_agent()(
+        response = get_agent()(
             f"""
             User Request:
             {prompt}
             """
         )
 
-    print("ROUTING TO ENERGY ADVISOR")
+        return {
+            "agent": "Device Agent",
+            "response": str(response)
+        }
 
-    return get_energy_agent()(
-        f"""
-        User Request:
-        {prompt}
-        """
-    )
+    else:
+
+        print("ROUTING TO ENERGY ADVISOR")
+
+        response = get_energy_agent()(
+            f"""
+            User Request:
+            {prompt}
+            """
+        )
+
+        return {
+            "agent": "Energy Advisor",
+            "response": str(response)
+        }

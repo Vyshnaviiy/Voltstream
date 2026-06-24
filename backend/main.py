@@ -1,9 +1,9 @@
-
+from services.agentcore_lambda_service import invoke_agentcore
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
-import agentcore.mock_data as mock_data
+import mock_data
 import agentcore.coordinator as coordinator
 from datetime import datetime
 from mangum import Mangum
@@ -15,9 +15,7 @@ from services.rag_service import (
 from services.bedrock_service import (
     generate_response
 )
-from agentcore.agent_service import (
-    run_agent
-)
+from services.agentcore_lambda_service import invoke_agentcore
 
 # =========================
 # FASTAPI APP
@@ -132,7 +130,7 @@ async def update_device(
 
         if device["id"] == device_id:
 
-            device["status"] = update.status
+            device["status"] = update.status.upper()
 
             return {
                 "message": "Device updated",
@@ -235,17 +233,45 @@ async def qa_endpoint(
             response=f"Error: {str(e)}",
             timestamp=datetime.now()
         )
-
+    
 @app.post("/api/v1/agent")
-async def agent_endpoint(
-    request: ChatRequest
-):
+async def agent_endpoint(request: ChatRequest):
 
-    result = run_agent(
+    result = invoke_agentcore(
         request.message
     )
 
-    return result
+    response_text = str(
+        result.get(
+            "response",
+            ""
+        )
+    ).lower()
+
+    for device in mock_data.devices:
+
+        device_name = device["name"].lower()
+
+        if device_name in response_text:
+
+            if (
+                "turned on" in response_text
+                or "already turned on" in response_text
+            ):
+
+                device["status"] = "ON"
+
+            elif (
+                "turned off" in response_text
+                or "already turned off" in response_text
+            ):
+
+                device["status"] = "OFF"
+
+    return result    
+       
+
+
 
 
 # =========================

@@ -1,3 +1,4 @@
+import requests
 from strands.tools import tool
 
 from mock_data import devices
@@ -22,7 +23,6 @@ def get_device_status(device_name: str):
         "error": "Device not found"
     }
 
-
 @tool
 def toggle_device(
     device_name: str,
@@ -37,7 +37,12 @@ def toggle_device(
 
         if device["name"].lower() == device_name.lower():
 
-            device["status"] = state.upper()
+            requests.patch(
+                f"http://127.0.0.1:8000/api/v1/devices/{device['id']}",
+                json={
+                    "status": state.upper()
+                }
+            )
 
             return {
                 "message":
@@ -55,9 +60,6 @@ def toggle_multiple_devices(
 ):
     """
     Turn multiple devices ON or OFF.
-    Use when the user mentions more than one device.
-    Example:
-    'Turn off Air Conditioner and Smart TV'
     """
 
     results = []
@@ -70,7 +72,12 @@ def toggle_multiple_devices(
 
             if device["name"].lower() == name.lower():
 
-                device["status"] = state.upper()
+                requests.patch(
+                    f"http://127.0.0.1:8000/api/v1/devices/{device['id']}",
+                    json={
+                        "status": state.upper()
+                    }
+                )
 
                 results.append(
                     f"{device['name']} turned {state.upper()}"
@@ -80,11 +87,13 @@ def toggle_multiple_devices(
                 break
 
         if not found:
+
             results.append(
                 f"{name} not found"
             )
 
     return results
+
 
 @tool
 def list_all_devices():

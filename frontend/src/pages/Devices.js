@@ -96,7 +96,7 @@ function Devices() {
 
   const DeviceCard = ({ device, index }) => {
     const Icon = iconMap[device.icon] || Zap;
-    const isOn = device.status === "ON";
+    const isOn = (device.status || "").toUpperCase() === "ON";
 
     return (
       <motion.div

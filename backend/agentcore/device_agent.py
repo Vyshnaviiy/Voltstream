@@ -1,7 +1,7 @@
 from strands import Agent
 from strands.models import BedrockModel
 
-from agent_tools import (
+from agentcore.agent_tools import (
     toggle_device,
     get_device_status,
     list_all_devices,

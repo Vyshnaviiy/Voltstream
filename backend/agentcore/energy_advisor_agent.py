@@ -1,7 +1,7 @@
 from strands import Agent
 from strands.models import BedrockModel
 
-from energy_advisor_tools import (
+from agentcore.energy_advisor_tools import (
     get_high_consumption_devices,
     get_bill_prediction,
     get_energy_summary,
